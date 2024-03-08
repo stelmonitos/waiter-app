@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 
 const Tables = () => {
     const tables = useSelector(getAllTables);
+    if(!tables){
+        return 'Loading...';
+    }
     return (
         <Container>
             <div className="row">
