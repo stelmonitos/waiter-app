@@ -1,6 +1,6 @@
 import { editTableRequest, getTableById } from "../../redux/tablesRedux";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import style from "./SingleTable.module.scss";
 import { useState } from "react";
@@ -25,8 +25,11 @@ const SingleTable = ({action , ...props }) => {
     
     const handleSubmit = () => {
         dispatch(editTableRequest({ ...table, id, peopleAmount, maxPeopleAmount, bill, status}));
+        navigate('/');
     };
-    
+    if(!table){
+        <Navigate to='/' />;
+    }
     return (
         <form onSubmit={validate(handleSubmit)}>
             <h1>Table {table.id}</h1><br />

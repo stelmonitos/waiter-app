@@ -11,7 +11,7 @@ const SingleTableWrapper = props => {
     const dispatch = useDispatch();
     const table = useSelector(tables => getTableById(tables, id));
     useEffect(() => {dispatch(fetchTables());}, [dispatch]);
-    if(!table){
+    if(!id){
         return 'Loading...';
     }
     return (
