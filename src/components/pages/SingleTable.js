@@ -7,21 +7,24 @@ import { useState } from "react";
 import { getAllStatus } from "../../redux/statusesRedux";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const SingleTable = ({action , ...props }) => {
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const table = useSelector(tables => getTableById(tables, id));
     const dispatch = useDispatch(); 
     const [peopleAmount, setPeopleAmount] = useState(table.peopleAmount);
-    const [maxPeople, setMaxPeople] = useState(table.maxPeopleAmount);
+    const [maxPeopleAmount, setMaxPeople] = useState(table.maxPeopleAmount);
     const [bill, setBill] = useState(table.bill);
     const [status, setStatus] = useState(table.status);
     const statuses = useSelector(getAllStatus);
-
+    
     const { register, handleSubmit: validate, formState: {errors} } = useForm();
-
+    
     const handleSubmit = () => {
-        dispatch(editTableRequest({ ...table, id, peopleAmount, maxPeople, bill, status}))
+        dispatch(editTableRequest({ ...table, id, peopleAmount, maxPeopleAmount, bill, status}));
     };
     
     return (
@@ -49,7 +52,7 @@ const SingleTable = ({action , ...props }) => {
                 <strong className="me-4">People:</strong>
                 <div className={`d-flex align-items-center ${style.numberWidth}`}>
                 <Form.Control
-                {...register('peopleAmount', {required: true, min: 0, max: maxPeople})}
+                {...register('peopleAmount', {required: true, min: 0, max: maxPeopleAmount})}
                     type="string" 
                     className={style.numberCenter} 
                     value={peopleAmount} 
@@ -57,15 +60,20 @@ const SingleTable = ({action , ...props }) => {
                     />
                 <div className="mx-3">/</div>
                 <Form.Control 
-                    {...register('maxPeople', {required: true, min: 0, max: 10})}
+                    {...register('maxPeopleAmount', {required: true, min: 0, max: 10})}
                     type="string" className={style.numberCenter} 
-                    value={maxPeople} 
-                    onChange={e => setMaxPeople(e.target.value)}
+                    value={maxPeopleAmount} 
+                    onChange={e => {
+                        setMaxPeople(e.target.value);
+                        if(e.target.value > 10){
+                            setMaxPeople(10);
+                        }
+                    }}
                     />
                 </div><br />
-                {errors.peopleAmount && <span className="ms-2 form-text text-danger">min 0 and max people is {maxPeople}</span>}
-                {errors.peopleAmount && errors.maxPeople && <span className="ms-2 form-text text-danger">wrong values</span>}
-                {errors.maxPeople && <span className="ms-2 form-text text-danger">max value is 10</span>}
+                {errors.peopleAmount && errors.maxPeopleAmount ? <div className="text-danger ms-2">People amount must be between 0 and 10</div> : null}
+                {errors.peopleAmount && <div className="text-danger ms-2">Wrong value!</div>}
+                {errors.maxPeopleAmount && <div className="text-danger ms-2">Min value is 0 max is {maxPeopleAmount}</div>}
             </div><br />
             {status === 'Busy' && (
                 <div className="d-flex align-items-center">

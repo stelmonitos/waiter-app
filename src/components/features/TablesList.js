@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Tables = () => {
     const tables = useSelector(getAllTables);
-    if(!tables){
+    if(!tables.length){
         return 'Loading...';
     }
     return (
