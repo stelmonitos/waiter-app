@@ -13,6 +13,7 @@ export const updateTables = payload => ({ payload, type: UPDATE_TABLES});
 export const editTable = payload => ({ payload, type: EDIT_TABLE,});
 
 export const editTableRequest = (editTable) => {
+  debugger;
   console.log(editTable);
   return (dispatch) => {
     const options = {
