@@ -66,7 +66,9 @@ const SingleTable = ({action , ...props }) => {
                         onChange={e => {
                             setMaxPeople(e.target.value);
                             if(e.target.value > 10){
-                                setMaxPeople(10);
+                                setMaxPeople('10');
+                            } else if(e.target.value < 0){
+                                setMaxPeople('0');
                             }
                         }}
                         />

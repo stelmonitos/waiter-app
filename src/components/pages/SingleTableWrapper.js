@@ -8,14 +8,11 @@ import { useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const SingleTableWrapper = props => {
-    console.log(props)
     const { id } = useParams();
     const dispatch = useDispatch();
     const table = useSelector(tables => getTableById(tables, id));
     useEffect(() => {dispatch(fetchTables());}, [dispatch]);
-    if(!id){
-        return 'Loading...';
-    } if(table){
+    if(table){
     return (
         <SingleTable
             {...props}

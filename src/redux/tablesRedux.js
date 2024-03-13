@@ -15,8 +15,6 @@ export const updateTables = payload => ({ payload, type: UPDATE_TABLES});
 export const editTable = payload => ({ payload, type: EDIT_TABLE,});
 
 export const editTableRequest = (editTable) => {
-  debugger;
-  console.log(editTable);
   return (dispatch) => {
     const options = {
       method: 'PUT',
@@ -26,7 +24,7 @@ export const editTableRequest = (editTable) => {
       body: JSON.stringify(editTable),
     };
 
-    fetch(API_URL + editTable.id , options)
+    fetch(API_URL + '/tables/' + editTable.id , options)
       .then(() => dispatch(updateTables(editTable)));
   }
 }
@@ -38,13 +36,13 @@ export const fetchTables = () => {
     .then(tables => dispatch(updateTables(tables)));
   }
 };
-
-const tablesReducer = (statePart = [], action) => {
+ const tablesReducer = (statePart = [], action) => {
+  console.log(action.payload)
   switch (action.type) {
     case UPDATE_TABLES:
-      return [...action.payload];
+      return Array.isArray(action.payload) ? [...action.payload] : [];
     case EDIT_TABLE:
-      return statePart.map(table => (table.id === action.payload.id ? {...table, ...action.payload} : table))
+      return statePart.map(table => (table.id === action.payload.id ? [{...table, ...action.payload}] : table));
     default:
       return statePart;
   };
